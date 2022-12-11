@@ -1,0 +1,18 @@
+// Set the composition and layer variables
+var comp = app.project.activeItem;
+var layer = comp.selectedLayers[0];
+
+// Create a new solid layer and use it as the smearing source
+var solid = comp.layers.addSolid([0, 0, 0], "Smearing Source", comp.width, comp.height, comp.pixelAspect);
+solid.blendingMode = BlendingMode.ADD;
+
+// Create a new time delay effect and apply it to the solid layer
+var delay = solid.Effects.addProperty("Time Delay");
+delay.property("Time Delay").setValue(5);
+
+// Create a new blur effect and apply it to the solid layer
+var blur = solid.Effects.addProperty("Gaussian Blur");
+blur.property("Blurriness").setValue(10);
+
+// Create a new blending mode and apply it to the main layer
+layer.blendingMode = BlendingMode.ADD;
