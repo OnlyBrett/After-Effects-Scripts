@@ -1,0 +1,19 @@
+// Set the composition and layer variables
+var comp = app.project.activeItem;
+var textLayer = comp.selectedLayers[0];
+var shapeLayer = comp.selectedLayers[1];
+
+// Get the source text of the text layer
+var sourceText = textLayer.property("Source Text");
+
+// Loop through each character in the text
+for (var i = 0; i < sourceText.numCharacters; i++) {
+  // Get the position and scale of the shape layer
+  var shapePos = shapeLayer.position.value;
+  var shapeScale = shapeLayer.scale.value;
+
+  // Set the position and scale of the character
+  var char = sourceText.character(i + 1);
+  char.position.setValue(shapePos);
+  char.scale.setValue(shapeScale);
+}
