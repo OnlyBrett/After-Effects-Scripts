@@ -1,0 +1,22 @@
+// Set the composition and layer variables
+var comp = app.project.activeItem;
+var layer = comp.selectedLayers[0];
+
+// Create a new solid layer and use it as the bokeh source
+var solid = comp.layers.addSolid([1, 1, 1], "Bokeh Source", comp.width, comp.height, comp.pixelAspect);
+solid.blendingMode = BlendingMode.ADD;
+
+// Create a new bokeh blur effect and apply it to the solid layer
+var blur = solid.Effects.addProperty("CC Bokeh");
+blur.property("Bokeh Color").setValue([1, 1, 1]);
+blur.property("Bokeh Threshold").setValue(50);
+blur.property("Bokeh Amount").setValue(100);
+
+// Create a new black and white effect and apply it to the main layer
+var bw = layer.Effects.addProperty("Color Balance (HLS)");
+bw.property("Hue").setValue(0);
+bw.property("Saturation").setValue(-100);
+bw.property("Luminance").setValue(0);
+
+// Create a new blending mode and apply it to the main layer
+layer.blendingMode = BlendingMode.ADD;
