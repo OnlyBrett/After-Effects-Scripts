@@ -1,0 +1,38 @@
+// Set the project and folder variables
+var project = app.project;
+var folder = project.file.parent;
+
+// Create a new folder for each composition in the project
+for (var i = 1; i <= project.numItems; i++) {
+  var item = project.item(i);
+  if (item instanceof CompItem) {
+    var compFolder = new Folder(folder + "/" + item.name);
+    compFolder.create();
+    item.file.parent = compFolder;
+  }
+}
+
+// Create a new folder for each asset type in the project
+var footageFolder = new Folder(folder + "/Footage");
+var audioFolder = new Folder(folder + "/Audio");
+var otherFolder = new Folder(folder + "/Other");
+footageFolder.create();
+audioFolder.create();
+otherFolder.create();
+
+for (var i = 1; i <= project.numItems; i++) {
+  var item = project.item(i);
+  if (item instanceof FootageItem) {
+    item.file.parent = footageFolder;
+  } else if (item instanceof FileItem && item.file.name.match(/\.(mp3|wav|aif)$/i)) {
+    item.file.parent = audioFolder;
+  } else {
+    item.file.parent = otherFolder;
+  }
+}
+
+// Collect the project and consolidate the footage
+var collectedFolder = new Folder(folder + "/" + project.name);
+collectedFolder.create();
+project.collectFiles(collectedFolder);
+project.consolidateFootage();
