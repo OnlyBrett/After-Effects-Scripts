@@ -1,0 +1,27 @@
+// Set the composition and layer variables
+var comp = app.project.activeItem;
+var layers = comp.layers;
+
+// Set the gravitational constant and initial velocity
+var g = 9.8; // m/s^2
+var v = 0; // m/s
+
+// Set the starting position and time interval
+var y = 0; // m
+var t = 0.01; // s
+
+// Loop through each frame and apply gravitational acceleration
+for (var i = 1; i <= comp.duration * comp.frameRate; i++) {
+  // Calculate the new position and velocity
+  y = y + v * t;
+  v = v + g * t;
+
+  // Update the position of each layer
+  for (var j = 1; j <= layers.length; j++) {
+    var layer = layers[j];
+    layer.position.setValue([layer.position.value[0], y]);
+  }
+
+  // Move to the next frame
+  comp.time += t;
+}
